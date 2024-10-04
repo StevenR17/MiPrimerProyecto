@@ -1,0 +1,14 @@
+{% extends 'catalogo/base.html' %}
+
+{% block content %}
+    <h2>Agregar Nuevo País</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        <button type="submit">Agregar</button>
+    </form>
+
+    <a href="{% url 'pais-list' %}">Regresar a la lista</a>
+{% endblock %}

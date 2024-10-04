@@ -1,0 +1,24 @@
+{% extends 'catalogo/base.html' %}
+
+{% block content %}
+    <h2>Agregar Nuevo Departamento</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+
+        <label for="pais">Seleccionar País:</label>
+        <select id="pais" name="pais" required>
+            <option value="">Seleccione un país</option>
+            {% for pais in paises %}
+            <option value="{{ pais.id }}">{{ pais.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Agregar</button>
+    </form>
+
+    <a href="{% url 'departamento-list' %}">Regresar a la lista</a>
+{% endblock %}

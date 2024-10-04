@@ -1,0 +1,24 @@
+{% extends 'catalogo/base.html' %}
+
+{% block content %}
+    <h2>Agregar Nuevo Municipio</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+
+        <label for="departamento">Seleccionar Departamento</label>
+        <select id="departamento" name="departamento" required>
+            <option value="">Seleccione un departamento</option>
+            {% for departamento in departamentos %}
+            <option value="{{ departamento.id }}">{{ departamento.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Agregar</button>
+    </form>
+
+    <a href="{% url 'municipio-list' %}">Regresar a la lista</a>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'catalogo/base.html' %}
+
+{% block content %}
+    <h2>Editar Departamento</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" value="{{ departamento.nombre }}" required>
+        <button type="submit">Actualizar</button>
+    </form>
+
+    <a href="{% url 'departamento-list' %}">Regresar a la lista</a>
+{% endblock %}

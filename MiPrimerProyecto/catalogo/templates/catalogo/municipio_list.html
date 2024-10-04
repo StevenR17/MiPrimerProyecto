@@ -1,0 +1,34 @@
+{% extends 'catalogo/base.html' %}
+
+{% block content %}
+    <h2>Lista de Municipios</h2>
+    <table>
+        <thead>
+            <tr>
+                <!--1er th para el 1er td-->
+                <th>MUNICIPIO</th>
+                <th>DEPARTAMENTO</th>
+                <th>PAÍS</th>
+                <th>ACCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--ACCEDER A LOS DATOS GUARDADOS -->
+            <!--CON EL NOMBRE DEFINIDO EN LA VISTA "departamentos"-->
+            {% for municipio in municipios %}
+                <tr>
+
+                    <td>{{ municipio.nombre }}</td>  
+                    <td>{{ municipio.departamento.nombre }}</td>
+                    <td>{{ municipio.departamento.pais.nombre }}</td>
+                    <td><a href="{% url 'municipio-update' municipio.id %}">Editar</a>
+                        <a href="{% url 'municipio-delete' municipio.id %}">Eliminar</a></td>
+
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Enlace para agregar -->
+    <a href="{% url 'municipio-add' %}">Agregar Municipio</a>
+{% endblock %}

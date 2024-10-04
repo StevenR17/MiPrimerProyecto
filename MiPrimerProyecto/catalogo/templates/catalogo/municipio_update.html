@@ -1,0 +1,15 @@
+{% extends 'catalogo/base.html' %}
+
+{% block content %}
+    <h2>Editar Municipio</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="nombre">Nombre:</label>
+        <!--{{municipio.nombre}}, obtiene el nombre del municipio de donde lo tenemos guardado-->
+        <input type="text" id="nombre" name="nombre" value="{{ municipio.nombre }}" required>
+        <button type="submit">Actualizar</button>
+    </form>
+
+    <a href="{% url 'municipio-list' %}">Regresar a la lista</a>
+{% endblock %}
