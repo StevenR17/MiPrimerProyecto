@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 
 # Authentication settings
 #Nos redirigira a la raiz el cual es definido en urls.py con el name = login
-LOGIN_URL = 'login'
+LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = 'login'
 LOGIN_REDIRECT_URL = '/home/'
 

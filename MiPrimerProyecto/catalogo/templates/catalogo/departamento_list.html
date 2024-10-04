@@ -2,6 +2,14 @@
 
 {% block content %}
     <h2>Lista de Departamentos</h2>
+
+    
+    <!-- Formulario de búsqueda -->
+    <form method="get">
+        <input type="text" name="search" placeholder="Buscar departamento o pais" value="{{ request.GET.search }}">
+        <button type="submit">Buscar</button>
+    </form>
+
     <table>
         <thead>
             <tr>
@@ -26,6 +34,24 @@
             {% endfor %}
         </tbody>
     </table>
+
+     
+    <!-- Paginación -->
+    <div>
+        {% if departamentos.has_other_pages %}
+            <span>
+                {% if departamentos.has_previous %}
+                    <a href="?page=1&search={{ request.GET.search }}">Primera</a>
+                    <a href="?page={{ departamentos.previous_page_number }}&search={{ request.GET.search }}">Anterior</a>
+                {% endif %}
+                Página {{ departamentos.number }} de {{ departamentos.paginator.num_pages }}.
+                {% if departamentos.has_next %}
+                    <a href="?page={{ departamentos.next_page_number }}&search={{ request.GET.search }}">Siguiente</a>
+                    <a href="?page={{ departamentos.paginator.num_pages }}&search={{ request.GET.search }}">Última</a>
+                {% endif %}
+            </span>
+        {% endif %}
+    </div>
 
     <!-- Enlace para agregar -->
     <a href="{% url 'departamento-add' %}">Agregar Departamento</a>

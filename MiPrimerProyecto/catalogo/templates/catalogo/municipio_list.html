@@ -2,6 +2,13 @@
 
 {% block content %}
     <h2>Lista de Municipios</h2>
+
+    <!-- Formulario de búsqueda -->
+    <form method="get">
+        <input type="text" name="search" placeholder="Buscar municipio, departamento o pais" value="{{ request.GET.search }}">
+        <button type="submit">Buscar</button>
+    </form>
+
     <table>
         <thead>
             <tr>
@@ -28,6 +35,24 @@
             {% endfor %}
         </tbody>
     </table>
+
+    
+    <!-- Paginación -->
+    <div>
+        {% if municipios.has_other_pages %}
+            <span>
+                {% if municipios.has_previous %}
+                    <a href="?page=1&search={{ request.GET.search }}">Primera</a>
+                    <a href="?page={{ municipios.previous_page_number }}&search={{ request.GET.search }}">Anterior</a>
+                {% endif %}
+                Página {{ municipios.number }} de {{ municipios.paginator.num_pages }}.
+                {% if municipios.has_next %}
+                    <a href="?page={{ municipios.next_page_number }}&search={{ request.GET.search }}">Siguiente</a>
+                    <a href="?page={{ municipios.paginator.num_pages }}&search={{ request.GET.search }}">Última</a>
+                {% endif %}
+            </span>
+        {% endif %}
+    </div>
 
     <!-- Enlace para agregar -->
     <a href="{% url 'municipio-add' %}">Agregar Municipio</a>

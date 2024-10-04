@@ -3,21 +3,35 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Pais, Departamento, Municipio
+from django.db.models import Q  # Para realizar búsquedas con Q objects
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 #VISTAS PARA PAIS
 
 #VER
-class PaisListView(ListView):
+class PaisListView( ListView):
     model = Pais
     #paginate_by = 10  # Agrega paginación
     template_name = 'catalogo/pais_list.html'
     #Definimos como acceder a los datos guardados en 
     #esta vista dentro de la plantilla
     context_object_name = 'paises'
+
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get('search')  # Obtén el término de búsqueda desde la URL
+        if query:
+            # Filtra los municipios que contienen el término de búsqueda en su nombre o en el nombre del país
+            queryset = queryset.filter(
+                Q(nombre__icontains=query)
+            )
+        return queryset
     
 #AGREGAR
 class PaisCreateView(PermissionRequiredMixin, CreateView):
@@ -58,11 +72,23 @@ def home(request):
 #VER
 class DepartamentoListView(ListView):
     model = Departamento
-    #paginate_by = 10  # Agrega paginación
+    paginate_by = 10  # Agrega paginación
     template_name = 'catalogo/departamento_list.html'
     #Definimos como acceder a los datos guardados en 
     #esta vista dentro de la plantilla
     context_object_name = 'departamentos'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get('search')  # Obtén el término de búsqueda desde la URL
+        if query:
+            # Filtra los municipios que contienen el término de búsqueda en su nombre o en el nombre del país
+            queryset = queryset.filter(
+                Q(nombre__icontains=query) | 
+                Q(pais__nombre__icontains=query)
+            )
+        return queryset
+
     
 #AGREGAR
 class DepartamentoCreateView(PermissionRequiredMixin, CreateView):
@@ -107,11 +133,23 @@ class DepartamentoDeleteView(PermissionRequiredMixin, DeleteView):
 #VER
 class MunicipioListView(ListView):
     model = Municipio
-    #paginate_by = 10  # Agrega paginación
+    paginate_by = 10  # Agrega paginación
     template_name = 'catalogo/municipio_list.html'
     #Definimos como acceder a los datos guardados en 
     #esta vista dentro de la plantilla
     context_object_name = 'municipios'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get('search')  # Obtén el término de búsqueda desde la URL
+        if query:
+            # Filtra los municipios que contienen el término de búsqueda en su nombre o en el nombre del departamento o país
+            queryset = queryset.filter(
+                Q(nombre__icontains=query) | 
+                Q(departamento__nombre__icontains=query) | 
+                Q(departamento__pais__nombre__icontains=query)
+            )
+        return queryset
     
 #AGREGAR
 class MunicipioCreateView(PermissionRequiredMixin, CreateView):
